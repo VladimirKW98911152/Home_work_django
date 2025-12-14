@@ -1,0 +1,8 @@
+asgiref @ file:///home/task_176034213200231/conda-bld/asgiref_1760342144188/work
+Django @ file:///croot/django_1724964382619/work
+joblib==1.4.2
+pandas==2.2.2
+scikit-learn==1.5.0
+sqlparse @ file:///croot/sqlparse_1734704446487/work
+threadpoolctl==3.5.0
+tzdata==2024.1
