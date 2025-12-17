@@ -1,0 +1,179 @@
+(NewsPortalDjango) ┌──(wladlk25㉿Kali)-[~/Desktop/NewsPortal/NewsPortal]
+└─$ python3 manage.py shell
+Python 3.11.14 (main, Oct 21 2025, 18:31:21) [GCC 11.2.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+(InteractiveConsole)
+>>> from news.models import *
+>>> u1 = User.objects.create_user(username='Серега')
+>>> u1
+<User: Серега>
+>>> u2 = User.objects.create_user(username='Юра')
+>>> u2
+<User: Юра>
+>>> Author.objects.create(authorUser=u1)
+<Author: Author object (1)>
+>>> Author.objects.create(authorUser=u2)
+<Author: Author object (2)>
+>>> Category.objects.create(name='Sociologiya')
+<Category: Category object (1)>
+>>> Category.objects.create(name='Право')
+<Category: Category object (2)>
+>>> Category.objects.create(name='Наука')
+<Category: Category object (3)>
+>>> Category.objects.create(name='Техника')
+<Category: Category object (4)>
+>>> author = Author.objects.get(id=1)
+>>> author
+<Author: Author object (1)>
+>>> Post.objects.create(author=author, categoryType="NW", title='Как проводить исследование', text='Чем больше выборка при проведении социологических исследований, тем выше репрезентативность этих исследований и тем точнее результаты исследования отражают общественные процессы')
+<Post: Post object (1)>
+>>> author = Author.objects.get(id=2)
+>>> author
+<Author: Author object (2)>
+>>> Post.objects.create(author=author, categoryType="NW", title='Подорожание автомобилей', text='Эксперты экономисты провели конференцию о том, может ли повышение утилизационного сбора оказать влияние на повышение стоимости автотранспортных средств на внутреннем рынке. На конференции поднимались различные вопросы, в том числе о перечне категорий транспортных средвтв, стоимости комплектующих, продаваемых на вторичном рынке, демонтированных с автомобилей, продаваемых для разбора на запасные части, а так же динамику изменений прибылей и убытков отдельных субъектов экономической деятельности ')
+<Post: Post object (2)>
+>>> author = Author.objects.get(id=1)
+>>> author
+<Author: Author object (1)>
+>>> Post.objects.create(author=author, categoryType="AR", title='Изменение в законодательстве', text='Федеральным законом от 29.10.2024 365-ФЗ размер минимальной оплаты труда был повышен на 3000 рублей и составил 22440 рублей в месяц')
+<Post: Post object (3)>
+>>> author = Author.objects.get(id=2)
+>>> Post.objects.create(author=author, categoryType="AR", title='Применение ИИ в кибербезопасности', text='Модели-классификаторы, обученные с помощью алгоритмов Random Forest, SVM и DT, а так же сверточные и рекуррентные нейронные сети, показали свою эффективность при противодействии таким сетевым атакам, как фишинг, а так же при выявлении аномального сетевого трафика, косвенно указывающего на возможность сетевых атак')
+<Post: Post object (4)>
+>>> Post.objects.get(id=3).text
+'Федеральным законом от 29.10.2024 365-ФЗ размер минимальной оплаты труда был повышен на 3000 рублей и составил 22440 рублей в месяц'
+>>> Post.objects.get(id=1).postCategory.add(Category.objects.get(id=1))
+>>> Post.objects.get(id=2).postCategory.add(Category.objects.get(id=2))
+>>> Post.objects.get(id=3).postCategory.add(Category.objects.get(id=3))
+>>> Post.objects.get(id=4).postCategory.add(Category.objects.get(id=4))
+>>> Comment.objects.create(commentPost=Post.objects.get(id=1), commentUser=Author.objects.get(id=1).authorUser, text='Интересно, будет о чем подумать')
+<Comment: Comment object (1)>
+>>> Comment.objects.create(commentPost=Post.objects.get(id=2), commentUser=Author.objects.get(id=2).authorUser, text='Интересное решение')
+<Comment: Comment object (2)>
+>>> Comment.objects.create(commentPost=Post.objects.get(id=3), commentUser=Author.objects.get(id=1).authorUser, text='Надо бы по лучше изучить этот вопрос, может найду что полезное')
+<Comment: Comment object (3)>
+>>> Comment.objects.create(commentPost=Post.objects.get(id=4), commentUser=Author.objects.get(id=2).authorUser, text='Интересно, а где-нибудь еще об этом можно будет почитать')
+<Comment: Comment object (4)>
+>>> Comment.objects.get(id=1).deslike()
+>>> Comment.objects.get(id=1).deslike()
+>>> Comment.objects.get(id=2).like()
+>>> Comment.objects.get(id=1).like()
+>>> Comment.objects.get(id=1).like()
+>>> Comment.objects.get(id=1).like()
+>>> Comment.objects.get(id=1).like()
+>>> Comment.objects.get(id=2).deslike()
+>>> Comment.objects.get(id=2).deslike()
+>>> Comment.objects.get(id=2).deslike()
+>>> Comment.objects.get(id=2).deslike()
+>>> Comment.objects.get(id=2).like()
+>>> Comment.objects.get(id=2).like()
+>>> Comment.objects.get(id=2).like()
+>>> Comment.objects.get(id=2).like()
+>>> Comment.objects.get(id=2).like()
+>>> Comment.objects.get(id=2).like()
+>>> Comment.objects.get(id=3).like()
+>>> Comment.objects.get(id=3).like()
+>>> Comment.objects.get(id=3).like()
+>>> Comment.objects.get(id=3).like()
+>>> Comment.objects.get(id=3).like()
+>>> Comment.objects.get(id=3).like()
+>>> Comment.objects.get(id=3).deslike()
+>>> Comment.objects.get(id=3).deslike()
+>>> Comment.objects.get(id=3).deslike()
+>>> Comment.objects.get(id=3).deslike()
+>>> Comment.objects.get(id=4).like()
+>>> Comment.objects.get(id=4).like()
+>>> Comment.objects.get(id=4).like()
+>>> Comment.objects.get(id=4).like()
+>>> Comment.objects.get(id=4).like()
+>>> Comment.objects.get(id=4).like()
+>>> Comment.objects.get(id=4).deslike()
+>>> Comment.objects.get(id=4).deslike()
+>>> Comment.objects.get(id=4).deslike()
+>>> Comment.objects.get(id=1).rating
+2
+>>> Comment.objects.get(id=2).rating
+3
+>>> Comment.objects.get(id=3).rating
+2
+>>> Comment.objects.get(id=4).rating
+3
+>>> Post.objects.get(id=1).dislike()
+>>> Post.objects.get(id=1).dislike()
+>>> Post.objects.get(id=1).dislike()
+>>> Post.objects.get(id=1).like()
+>>> Post.objects.get(id=1).like()
+>>> Post.objects.get(id=1).like()
+>>> Post.objects.get(id=1).like()
+>>> Post.objects.get(id=1).like()
+>>> Post.objects.get(id=1).like()
+>>> Post.objects.get(id=1).like()
+>>> Post.objects.get(id=1).like()
+>>> Post.objects.get(id=2).like()
+>>> Post.objects.get(id=2).like()
+>>> Post.objects.get(id=2).like()
+>>> Post.objects.get(id=2).like()
+>>> Post.objects.get(id=2).like()
+>>> Post.objects.get(id=2).dislike()
+>>> Post.objects.get(id=2).dislike()
+>>> Post.objects.get(id=3).dislike()
+>>> Post.objects.get(id=3).dislike()
+>>> Post.objects.get(id=3).dislike()
+>>> Post.objects.get(id=3).like()
+>>> Post.objects.get(id=3).like()
+>>> Post.objects.get(id=3).like()
+>>> Post.objects.get(id=3).like()
+>>> Post.objects.get(id=3).like()
+>>> Post.objects.get(id=4).like()
+>>> Post.objects.get(id=4).like()
+>>> Post.objects.get(id=4).like()
+>>> Post.objects.get(id=4).like()
+>>> Post.objects.get(id=4).like()
+>>> Post.objects.get(id=4).dislike()
+>>> Post.objects.get(id=4).dislike()
+>>> Post.objects.get(id=4).dislike()
+>>> Post.objects.get(id=1).rating
+-11
+>>> Post.objects.get(id=2).rating
+-7
+>>> Post.objects.get(id=3).rating
+-8
+>>> Post.objects.get(id=4).rating
+-8
+>>> Author.objects.get(id=1)
+<Author: Author object (1)>
+>>> a=Author.objects.get(id=1)
+>>> a.update_rating()
+>>> a=Author.objects.get(id=1)
+>>> a.update_rating()
+>>> a.ratingAuthor
+-53
+>>> a=Author.objects.get(id=2)
+>>> a=Author.objects.get(id=1)
+>>> Author.objects.get(id=2)
+<Author: Author object (2)>
+>>> a=Author.objects.get(id=2)
+>>> a.update_rating()
+>>> a.ratingAuthor
+-39
+>>> a=Author.objects.order_by('-ratingAuthor')[:1]
+>>> a
+<QuerySet [<Author: Author object (2)>]>
+>>> a=Author.objects.order_by('-ratingAuthor')[:2]
+>>> a
+<QuerySet [<Author: Author object (2)>, <Author: Author object (1)>]>
+>>> a=Author.objects.order_by('-ratingAuthor')
+>>> a
+<QuerySet [<Author: Author object (2)>, <Author: Author object (1)>]>
+>>> for i in a:
+...     i.ratingAuthor
+...     i.authorUser.username
+... 
+-39
+'Юра'
+-53
+'Серега'
+>>> exit()
+                                                                                                                                
+(NewsPortalDjango) ┌──(wladlk25㉿Kali)-[~/Desktop/NewsPortal/NewsPortal]
+└─$ 
