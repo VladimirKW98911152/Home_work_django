@@ -16,8 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from news.views import PostDetailView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('pages/', include('django.contrib.flatpages.urls'))
+    path('pages/', include('django.contrib.flatpages.urls')),
+    path('news/', include('news.urls')),
+    path('news/<int:pk>/', PostDetailView.as_view(), name='news'),
 ]

@@ -1,0 +1,28 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+
+{% block title %}{{ post.title|censor }}{% endblock %}
+
+{% block content %}
+    <h1>{{ post.title|censor }}</h1>
+    
+    <div style="color: #666; font-size: 0.9em; margin-bottom: 20px;">
+        <strong>Дата публикации:</strong> {{ post.dateCreation|date:"d.m.Y H:i" }}<br>
+        <strong>Автор:</strong> {{ post.author.authorUser.username }}<br>
+        <strong>Тип:</strong> 
+        {% if post.categoryType == 'NW' %}Новость{% else %}Статья{% endif %}
+    </div>
+    
+    <hr>
+
+    <div style="font-size: 1.1em; line-height: 1.6;">
+        {{ post.text|censor|linebreaks }}
+    </div>
+    
+    <hr>
+    
+    <p style="text-align: center;">
+        <a href="/news/">← Вернуться ко всем новостям</a>
+    </p>
+{% endblock %}

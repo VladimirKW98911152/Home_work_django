@@ -20,6 +20,9 @@ class Author(models.Model):
         self.ratingAuthor = pRat *3 + cRat
         self.save()
 
+    def __str__(self):
+        return self.authorUser.username
+
 
 class Category(models.Model):
     name = models.CharField(max_length=64, unique=True)
@@ -45,7 +48,7 @@ class Post(models.Model):
     rating = models.SmallIntegerField(default=0)
 
     def like(self):
-        self.rating -= 1
+        self.rating += 1
         self.save()
 
     def dislike(self):
@@ -56,7 +59,7 @@ class Post(models.Model):
         return self.text[0:123] + '...'
 
     def str(self):
-        return f'{self.title.title()}:{self.text[:250]}'
+        return self.title
 
     def get_absolute_url(self):
         return f'/news/{self.id}'
@@ -78,7 +81,7 @@ class Comment(models.Model):
         self.rating += 1
         self.save()
 
-    def deslike(self):
+    def dislike(self):
         self.rating -= 1
         self.save()
 
