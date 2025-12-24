@@ -1,34 +1,163 @@
 {% extends 'flatpages/default.html' %}
 
 {% load custom_filters %}
+{% load custom_tags %}
 
-{% block title %}Все новости{% endblock %}
+{% block title %}Все новости и статьи{% endblock %}
 
 {% block content %}
-<h1>Новости и статьи</h1>
-
-<p style="font-size: 1.em; font-weight: bold; color: #13A2FF; background: #FFFFAA; padding: 10px; border-radius: 5px;">
-     Всего записей: {{ posts|length }}
-</p>
-<hr>
-
-{% if posts %}
-    {% for post in posts %}
-        <h2>
-            <a href="{{ post.get_absolute_url }}">{{ post.title|censor }}</a>
-        </h2>
-        
-        <p><strong>Дата:</strong> {{ post.dateCreation|date:"d.m.Y H:i" }}</p>
-        <p><strong>Автор:</strong> {{ post.author.authorUser.username }}</p>
-        
-        <div style="background: #f9f9f9; padding: 15px; margin: 15px 0;">
-            {{ post.text|censor|truncatechars:20 }}
+    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 8px; margin-bottom: 30px;">
+        <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+            <a href="{% url 'news_create' %}" style="background: rgba(255,255,255,0.2); border: 2px solid white; padding: 12px 25px; color: white; text-decoration: none; border-radius: 5px; display: flex; align-items: center; gap: 10px; transition: all 0.3s;">
+                <span style="font-weight: bold;">Добавить новость</span>
+            </a>
+            <a href="{% url 'article_create' %}" style="background: rgba(255,255,255,0.2); border: 2px solid white; padding: 12px 25px; color: white; text-decoration: none; border-radius: 5px; display: flex; align-items: center; gap: 10px; transition: all 0.3s;">
+                <span style="font-weight: bold;">Добавить статью</span>
+            </a>
         </div>
-        
-        <p><a href="{{ post.get_absolute_url }}">Читать полностью →</a></p>
-        <hr>
-    {% endfor %}
-{% else %}
-    <p>Пока нет новостей.</p>
-{% endif %}
+    </div>
+
+    <h1>Новости и статьи</h1>
+
+    <div style="background-color: #f8f9fa; padding: 20px; border-radius: 5px; margin-bottom: 25px;">
+        <form action="" method="get">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; align-items: end;">
+                <div>
+                    <label for="id_author" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
+                        Автор:
+                    </label>
+                    {{ filterset.form.author }}
+                </div>
+                
+                <div>
+                    <label for="id_title" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
+                        Поиск по названию (заголовку):
+                    </label>
+                    {{ filterset.form.title }}
+                </div>
+                
+                <div>
+                    <label for="id_date_after" style="display: block; margin-bottom: 8px; font-weight: bold; color: #333;">
+                        Дата создания после:
+                    </label>
+                    {{ filterset.form.date_after }}
+                </div>
+                
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <input type="submit" value="Найти" style="padding: 10px 25px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; transition: background-color 0.3s;">
+                    <a href="?" style="padding: 10px 25px; background-color: #6c757d; color: white; text-decoration: none; border-radius: 4px;">Сбросить</a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div style="margin-bottom: 20px; padding: 12px 15px; background-color: #e7f3ff; border-left: 4px solid #007bff; border-radius: 4px;">
+        <p style="margin: 0; font-weight: bold; color: #0056b3; display: flex; align-items: center; gap: 10px;">
+            <span>
+                Всего записей: {{ posts|length }}
+                {% if filterset.form.author.value %}
+                    | Автор выбран
+                {% endif %}
+                {% if filterset.form.title.value %}
+                    | По запросу: "{{ filterset.form.title.value }}"
+                {% endif %}
+                {% if filterset.form.date_after.value %}
+                    | После: {{ filterset.form.date_after.value }}
+                {% endif %}
+            </span>
+        </p>
+    </div>
+
+    <hr>
+
+    {% if posts %}
+        <div style="display: grid; gap: 25px;">
+            {% for post in posts %}
+                <div style="border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; background-color: white; box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: transform 0.2s;">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 15px;">
+                        <h2 style="margin: 0; flex: 1;">
+                            <a href="{{ post.get_absolute_url }}" style="color: #333; text-decoration: none; font-size: 1.3em;">
+                                {{ post.title|censor }}
+                            </a>
+                        </h2>
+                        <div style="margin-left: 15px;">
+                            <span style="background-color: {% if post.categoryType == 'NW' %}#17a2b8{% else %}#28a745{% endif %}; color: white; padding: 5px 12px; border-radius: 15px; font-size: 0.85em; font-weight: bold; display: inline-block;">
+                                {% if post.categoryType == 'NW' %} Новость{% else %} Статья{% endif %}
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div style="color: #666; font-size: 0.9em; margin-bottom: 15px; display: flex; gap: 20px; flex-wrap: wrap;">
+                        <div>
+                            <strong> Дата:</strong> {{ post.dateCreation|date:"d.m.Y H:i" }}
+                        </div>
+                        <div>
+                            <strong> Автор:</strong> {{ post.author.authorUser.username }}
+                        </div>
+                        <div>
+                            <strong> Рейтинг:</strong> {{ post.rating }}
+                        </div>
+                    </div>
+                    
+                    <div style="background-color: #f9f9f9; padding: 15px; border-radius: 5px; margin-bottom: 15px; border-left: 3px solid #ddd;">
+                        <p style="margin: 0; color: #555; line-height: 1.5;">
+                            {{ post.text|censor|truncatechars:200 }}
+                        </p>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
+                        <a href="{{ post.get_absolute_url }}" style="color: #007bff; text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 5px;">
+                            Читать полностью →
+                        </a>
+                        
+                        <div style="display: flex; gap: 10px;">
+                            <a href="{% url 'news_edit' post.id %}" style="color: #ffc107; text-decoration: none; font-size: 0.9em; display: flex; align-items: center; gap: 3px;">
+                                Редактировать
+                            </a>
+                            <a href="{% url 'news_delete' post.id %}" style="color: #dc3545; text-decoration: none; font-size: 0.9em; display: flex; align-items: center; gap: 3px;">
+                                Удалить
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div style="text-align: center; padding: 40px; background-color: #f8f9fa; border-radius: 8px;">
+            <p style="font-size: 1.2em; color: #666;">Пока нет новостей и статей.</p>
+            <p style="margin-top: 10px;">
+                <a href="{% url 'news_create' %}" style="color: #007bff; text-decoration: none; font-weight: bold;">
+                    Создайте первую новость!
+                </a>
+            </p>
+        </div>
+    {% endif %}
+
+    {% if page_obj.has_other_pages %}
+        <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #ddd; text-align: center;">
+            <div style="display: inline-flex; gap: 5px; align-items: center;">
+                {% if page_obj.has_previous %}
+                    <a href="?{% url_replace page=1 %}" style="padding: 8px 12px; background-color: #007bff; color: white; text-decoration: none; border-radius: 4px; font-size: 0.9em;">
+                        « Первая
+                    </a>
+                    <a href="?{% url_replace page=page_obj.previous_page_number %}" style="padding: 8px 12px; background-color: #6c757d; color: white; text-decoration: none; border-radius: 4px; font-size: 0.9em;">
+                        ‹ Назад
+                    </a>
+                {% endif %}
+                
+                <span style="padding: 8px 15px; background-color: #e9ecef; border-radius: 4px; font-weight: bold;">
+                    Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+                </span>
+                
+                {% if page_obj.has_next %}
+                    <a href="?{% url_replace page=page_obj.next_page_number %}" style="padding: 8px 12px; background-color: #6c757d; color: white; text-decoration: none; border-radius: 4px; font-size: 0.9em;">
+                        Вперед ›
+                    </a>
+                    <a href="?{% url_replace page=page_obj.paginator.num_pages %}" style="padding: 8px 12px; background-color: #007bff; color: white; text-decoration: none; border-radius: 4px; font-size: 0.9em;">
+                        Последняя »
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}

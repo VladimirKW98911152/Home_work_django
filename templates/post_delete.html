@@ -1,0 +1,62 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+
+{% block title %}Удаление поста{% endblock %}
+
+{% block content %}
+    <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+        <h1 style="color: #dc3545; margin-bottom: 20px;">
+            Удаление поста
+        </h1>
+        
+        <div style="background-color: #fff3cd; border: 1px solid #ffeaa7; padding: 20px; border-radius: 5px; margin-bottom: 30px;">
+            <h3 style="margin-top: 0;">Информация:</h3>
+            
+            <div style="margin-bottom: 10px;">
+                <strong>Заголовок:</strong>
+                <div style="font-size: 1.2em; font-weight: bold; margin-top: 5px;">
+                    "{{ object.title|censor }}"
+                </div>
+            </div>
+            
+            <div style="display: flex; gap: 30px; margin-top: 15px;">
+                <div>
+                    <strong>Тип:</strong><br>
+                    {% if object.categoryType == 'NW' %}
+                        <span style="color: #17a2b8;">Новость</span>
+                    {% else %}
+                        <span style="color: #28a745;">Статья</span>
+                    {% endif %}
+                </div>
+                
+                <div>
+                    <strong>Автор:</strong><br>
+                    {{ object.author.authorUser.username }}
+                </div>
+                
+                <div>
+                    <strong>Дата:</strong><br>
+                    {{ object.dateCreation|date:"d.m.Y H:i" }}
+                </div>
+            </div>
+        </div>
+        
+        <form action="" method="post" style="text-align: center;">
+            {% csrf_token %}
+            
+            <p style="font-size: 1.1em; margin-bottom: 25px;">
+                Продолжение этого действия приведет к безвозвратному удалению
+            </p>
+            
+            <div style="display: flex; justify-content: center; gap: 15px;">
+                <button type="submit" style="padding: 12px 30px; background-color: #dc3545; color: white; border: none; border-radius: 4px; font-size: 1em; cursor: pointer;">
+                    Да, удалить
+                </button>
+                <a href="{% url 'news_list' %}" style="padding: 12px 30px; background-color: #6c757d; color: white; text-decoration: none; border-radius: 4px; display: inline-block;">
+                    Нет, отменить
+                </a>
+            </div>
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,106 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+
+{% block title %}
+    {% if object %}Редактирование{% else %}Создание{% endif %}
+    {% if 'news' in request.path %}новости{% else %}статьи{% endif %}
+{% endblock %}
+
+{% block content %}
+    <h1>
+        {% if object %}
+            Редактирование "{{ object.title|censor }}"
+        {% else %}
+            {% if 'articles' in request.path %}
+                Создание статьи
+            {% else %}
+                Создание новости
+            {% endif %}
+        {% endif %}
+    </h1>
+
+    <hr>
+
+    <form action="" method="post">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+            <div style="color: red; margin-bottom: 15px;">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
+        <div style="margin-bottom: 15px;">
+            <label for="id_author" style="display: block; margin-bottom: 5px; font-weight: bold;">
+                Автор:
+            </label>
+            {{ form.author }}
+            {% if form.author.errors %}
+                <div style="color: red; font-size: 0.9em;">{{ form.author.errors }}</div>
+            {% endif %}
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label for="id_title" style="display: block; margin-bottom: 5px; font-weight: bold;">
+                {% if 'articles' in request.path %}
+                    Заголовок статьи:
+                {% else %}
+                    Заголовок новости:
+                {% endif %}
+            </label>
+            {{ form.title }}
+            {% if form.title.errors %}
+                <div style="color: red; font-size: 0.9em;">{{ form.title.errors }}</div>
+            {% endif %}
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label for="id_text" style="display: block; margin-bottom: 5px; font-weight: bold;">
+                {% if 'articles' in request.path %}
+                    Текст статьи:
+                {% else %}
+                    Текст новости:
+                {% endif %}
+            </label>
+            {{ form.text }}
+            {% if form.text.errors %}
+                <div style="color: red; font-size: 0.9em;">{{ form.text.errors }}</div>
+            {% endif %}
+        </div>
+
+        <div style="margin-bottom: 15px; padding: 10px; background-color: #e8f4fc; border-radius: 4px;">
+            <strong>Тип контента:</strong>
+            {% if 'articles' in request.path %}
+                <span style="color: #28a745; font-weight: bold;">Статья</span>
+            {% else %}
+                <span style="color: #17a2b8; font-weight: bold;">Новость</span>
+            {% endif %}
+            <input type="hidden" name="categoryType" value="{% if 'news' in request.path %}NW{% else %}AR{% endif %}">
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: bold;">
+                Категории:
+            </label>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                {% for checkbox in form.postCategory %}
+                    <div style="display: flex; align-items: center; padding: 5px 10px; background: #f0f0f0; border-radius: 4px;">
+                        {{ checkbox.tag }}
+                        <label for="{{ checkbox.id_for_label }}" style="margin-left: 5px; cursor: pointer;">
+                            {{ checkbox.choice_label }}
+                        </label>
+                    </div>
+                {% endfor %}
+            </div>
+            {% if form.postCategory.errors %}
+                <div style="color: red; font-size: 0.9em;">{{ form.postCategory.errors }}</div>
+            {% endif %}
+        </div>
+
+        <div style="margin-top: 20px;">
+            <input type="submit" value="{% if 'articles' in request.path %}Создать статью{% else %}Создать новость{% endif %}" style="padding: 10px 20px; background-color: {% if 'articles' in request.path %}#28a745{% else %}#17a2b8{% endif %}; color: white; border: none; border-radius: 4px; cursor: pointer;">
+            <a href="{% url 'news_list' %}" style="margin-left: 15px; padding: 10px 20px; background-color: #6c757d; color: white; text-decoration: none; border-radius: 4px;">Отмена</a>
+        </div>
+    </form>
+{% endblock %}
