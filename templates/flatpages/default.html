@@ -24,6 +24,10 @@
                      <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
+
+
+
+
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item active">
                             <a class="nav-link" href="#">Home
@@ -42,7 +46,19 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/news/">List News</a>
                         </li>
-
+                        {% if user.is_authenticated %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'logout' %}" style="color: #dc3545;">
+                                    <span style="margin-right: 5px;"></span>Выйти
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'login' %}" style="color: #28a745;">
+                                    <span style="margin-right: 5px;"></span>Войти
+                                </a>
+                            </li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>

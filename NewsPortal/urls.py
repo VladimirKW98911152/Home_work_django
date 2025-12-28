@@ -21,7 +21,9 @@ from news.views import PostDetailView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('pages/', include('django.contrib.flatpages.urls')),
-    path('', include('news.urls')), # 
+    path('accounts/', include('allauth.urls')),
+    path('sign/', include('sign.urls')),
+    path('protect/', include('protect.urls')),
+    path('', include('news.urls')),
     path('news/', include('news.urls')),
-#    path('news/<int:pk>/', PostDetailView.as_view(), name='news'),
 ]

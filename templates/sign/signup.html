@@ -1,0 +1,50 @@
+{% extends 'flatpages/default.html' %}
+
+{% block content %}
+<div style="max-width: 400px; margin: 50px auto; padding: 30px; background: #f8f9fa; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+    <h2 style="text-align: center; margin-bottom: 30px; color: #333;">Регистрация</h2>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        <div style="margin-bottom: 15px;">
+            <label for="id_username" style="display: block; margin-bottom: 5px; font-weight: bold;">Имя пользователя:</label>
+            <input type="text" name="username" id="id_username" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+            {% if form.username.errors %}
+            <div style="color: red; font-size: 0.9em; margin-top: 5px;">{{ form.username.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div style="margin-bottom: 15px;">
+            <label for="id_email" style="display: block; margin-bottom: 5px; font-weight: bold;">Email:</label>
+            <input type="email" name="email" id="id_email" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+        </div>
+        
+        <div style="margin-bottom: 15px;">
+            <label for="id_password1" style="display: block; margin-bottom: 5px; font-weight: bold;">Пароль:</label>
+            <input type="password" name="password1" id="id_password1" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+            <small style="color: #666;">Пароль должен содержать минимум 8 символов.</small>
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+            <label for="id_password2" style="display: block; margin-bottom: 5px; font-weight: bold;">Подтверждение пароля:</label>
+            <input type="password" name="password2" id="id_password2" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+            {% if form.password2.errors %}
+            <div style="color: red; font-size: 0.9em; margin-top: 5px;">{{ form.password2.errors }}</div>
+            {% endif %}
+        </div>
+        
+        <div style="text-align: center;">
+            <input type="submit" value="Зарегистрироваться" style="background: #28a745; color: white; padding: 10px 30px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">
+        </div>
+    </form>
+    
+    <div style="margin-top: 20px; text-align: center;">
+        <p>Уже есть аккаунт? <a href="{% url 'login' %}" style="color: #007bff;">Войти</a></p>
+        <p>Или зарегистрируйтесь через:</p>
+        <a href="/accounts/yandex/login/?process=signup" style="display: inline-block; background: #ffcc00; color: #000; padding: 10px 20px; text-decoration: none; border-radius: 4px; margin-top: 10px;">
+            Яндекс
+        </a>
+    </div>
+</div>
+{% endblock %}

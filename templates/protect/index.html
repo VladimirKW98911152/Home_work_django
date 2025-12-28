@@ -1,0 +1,59 @@
+{% extends 'flatpages/default.html' %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 50px auto; padding: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); text-align: center;">
+    <h1 style="margin-bottom: 20px; font-size: 2.5em;">Добро пожаловать!</h1>
+    
+    <div style="background: rgba(255,255,255,0.1); padding: 30px; border-radius: 10px; margin: 30px 0;">
+        <h2 style="margin-top: 0;">Защищенная страница</h2>
+        
+        <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 8px; margin: 20px 0;">
+            <p style="margin: 10px 0; font-size: 1.2em;">
+                👤 <strong>Пользователь:</strong> {{ user.username }}
+            </p>
+            <p style="margin: 10px 0; font-size: 1.2em;">
+                📧 <strong>Email:</strong> {{ user.email|default:"Не указан" }}
+            </p>
+            <p style="margin: 10px 0; font-size: 1.2em;">
+                📅 <strong>Дата регистрации:</strong> {{ user.date_joined|date:"d.m.Y" }}
+            </p>
+        </div>
+        
+        {% if user.groups.all %}
+        <div style="margin: 25px 0;">
+            <h3>Ваши группы:</h3>
+            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 15px;">
+                {% for group in user.groups.all %}
+                <span style="background: rgba(255,255,255,0.3); padding: 8px 15px; border-radius: 20px; border: 2px solid white;">
+                    {{ group.name }}
+                </span>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    
+    <div style="margin-top: 30px; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+        <a href="{% url 'news_list' %}" style="background: white; color: #667eea; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold; transition: all 0.3s;">
+            📰 К новостям
+        </a>
+        
+        {% if not user.groups.filter.name == 'authors' %}
+        <a href="{% url 'upgrade' %}" style="background: #28a745; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold; transition: all 0.3s;">
+            ✍️ Стать автором
+        </a>
+        {% endif %}
+        
+        <a href="{% url 'logout' %}" style="background: #dc3545; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold; transition: all 0.3s;">
+            🚪 Выйти
+        </a>
+    </div>
+    
+    <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.3);">
+        <p style="font-size: 0.9em; opacity: 0.8;">
+            Эта страница доступна только авторизованным пользователям.
+            <br>Вы успешно прошли аутентификацию.
+        </p>
+    </div>
+</div>
+{% endblock %}

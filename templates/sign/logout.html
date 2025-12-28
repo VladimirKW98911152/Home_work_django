@@ -1,0 +1,26 @@
+{% extends 'flatpages/default.html' %}
+
+{% block content %}
+<div style="max-width: 500px; margin: 100px auto; padding: 40px; text-align: center; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+    <h1 style="font-size: 3em; margin-bottom: 20px;"></h1>
+    <h2 style="margin-bottom: 20px;">Выход из системы</h2>
+    <p style="font-size: 1.2em; margin-bottom: 30px;">
+        Вы успешно вышли из своей учетной записи.
+    </p>
+    <div style="margin-top: 30px;">
+        <a href="{% url 'news_list' %}" style="background: rgba(255,255,255,0.2); border: 2px solid white; padding: 12px 30px; color: white; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block; margin-right: 10px;">
+            К списку новостей
+        </a>
+        <a href="{% url 'login' %}" style="background: white; color: #f5576c; padding: 12px 30px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">
+            Войти снова
+        </a>
+    </div>
+</div>
+
+<script>
+    // Автоматический редирект через 3 секунды
+    setTimeout(function() {
+        window.location.href = "{% url 'news_list' %}";
+    }, 3000);
+</script>
+{% endblock %}

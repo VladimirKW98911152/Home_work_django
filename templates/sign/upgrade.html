@@ -1,0 +1,40 @@
+{% extends 'flatpages/default.html' %}
+
+{% block content %}
+<div style="max-width: 500px; margin: 50px auto; padding: 30px; background: #f8f9fa; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); text-align: center;">
+    <h2 style="color: #333; margin-bottom: 20px;">Стать автором</h2>
+    
+    <div style="background: #fff3cd; padding: 20px; border-radius: 5px; margin-bottom: 30px; border-left: 4px solid #ffc107;">
+        <h3 style="margin-top: 0; color: #856404;">Что дает статус автора?</h3>
+        <ul style="text-align: left; margin: 15px 0; padding-left: 20px;">
+            <li>Создание новостей и статей</li>
+            <li>Редактирование собственных публикаций</li>
+            <li>Удаление собственных публикаций</li>
+            <li>Доступ к расширенным функциям портала</li>
+        </ul>
+    </div>
+    
+    <p style="font-size: 1.1em; margin-bottom: 30px;">
+        Вы хотите стать автором и получить возможность создавать и редактировать новости и статьи?
+    </p>
+    
+    <form method="post">
+        {% csrf_token %}
+        <div style="display: flex; justify-content: center; gap: 15px;">
+            <button type="submit" style="background: #28a745; color: white; padding: 12px 30px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 1.1em;">
+                Да, стать автором
+            </button>
+            <a href="{% url 'news_list' %}" style="background: #6c757d; color: white; padding: 12px 30px; text-decoration: none; border-radius: 4px; display: inline-block; font-weight: bold; font-size: 1.1em;">
+                Нет, вернуться
+            </a>
+        </div>
+    </form>
+    
+    <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd;">
+        <p style="color: #666; font-size: 0.9em;">
+            После нажатия кнопки "Да, стать автором" вы будете добавлены в группу авторов.
+            <br>Это действие можно выполнить только один раз.
+        </p>
+    </div>
+</div>
+{% endblock %}
