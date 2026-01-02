@@ -1,12 +1,13 @@
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import redirect, get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 
-from .models import Post
+from .models import Post, Subscriber
 from .filters import PostFilter
-from .forms import PostForm
+from .forms import PostForm, SubscribeForm
 
 
 class PostListView(ListView):
@@ -104,3 +105,24 @@ class PostDeleteView(BasePostView, DeleteView):
             context['content_type'] = 'статья'
         
         return context
+
+@login_required
+def subscribe_view(request):
+    if request.method == 'POST':
+        form = SubscribeForm(request.POST)
+        if form.is_valid():
+            categories = form.cleaned_data['categories']
+            for category in categories:
+                Subscriber.objects.get_or_create(
+                    user=request.user, 
+                    category=category
+                )
+            return redirect('news_list')
+    else:
+        form = SubscribeForm()
+    
+    user_subscriptions = Subscriber.objects.filter(user=request.user).values_list('category__name', flat=True)
+    return render(request, 'subscribe.html', {
+        'form': form,
+        'user_subscriptions': list(user_subscriptions)
+    })

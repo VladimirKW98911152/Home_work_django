@@ -91,3 +91,14 @@ class Comment(models.Model):
 
     def str(self):
         return f'{self.text[:20]}'
+
+class Subscriber(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    subscribed_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'category')
+
+    def __str__(self):
+        return f'{self.user.username} подписан на {self.category.name}'

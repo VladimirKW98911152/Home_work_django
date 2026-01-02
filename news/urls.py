@@ -5,12 +5,14 @@ from .views import (
     NewsCreateView, 
     ArticleCreateView,
     PostUpdateView,
-    PostDeleteView
+    PostDeleteView,
+    subscribe_view
 )
 
 urlpatterns = [
     path('', PostListView.as_view(), name='news_list'),
     path('<int:pk>/', PostDetailView.as_view(), name='post'),
+    path('subscribe/', subscribe_view, name='subscribe'),
     
     # Новости
     path('create/', NewsCreateView.as_view(), name='news_create'),

@@ -1,0 +1,63 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %}Подписка на категории{% endblock %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 0 auto;">
+    <h2 style="margin-bottom: 20px;">Подписка на категории</h2>
+    
+    {% if user_subscriptions %}
+    <div style="background-color: #e7f3ff; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+        <h4 style="margin-top: 0;">Ваши текущие подписки:</h4>
+        <ul style="list-style-type: none; padding-left: 0;">
+            {% for sub in user_subscriptions %}
+            <li style="margin-bottom: 5px;">
+                <span style="background-color: #17a2b8; color: white; padding: 3px 8px; border-radius: 3px; margin-right: 10px;">✓</span>
+                {{ sub }}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    
+    <form method="post" style="background-color: #f8f9fa; padding: 20px; border-radius: 5px;">
+        {% csrf_token %}
+        
+        <div style="margin-bottom: 15px;">
+            <strong>{{ form.categories.label }}</strong>
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px;">
+            {% for checkbox in form.categories %}
+            <div style="display: flex; align-items: center; padding: 8px; background-color: white; border-radius: 4px; border: 1px solid #ddd;">
+                {{ checkbox.tag }}
+                <label for="{{ checkbox.id_for_label }}" style="margin-left: 8px; cursor: pointer;">
+                    {{ checkbox.choice_label }}
+                </label>
+            </div>
+            {% endfor %}
+        </div>
+        
+        {% if form.errors %}
+        <div style="color: #dc3545; margin-top: 15px;">
+            {{ form.errors }}
+        </div>
+        {% endif %}
+        
+        <div style="margin-top: 25px; display: flex; gap: 15px;">
+            <button type="submit" style="padding: 10px 25px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                Сохранить подписки
+            </button>
+            <a href="{% url 'news_list' %}" style="padding: 10px 25px; background-color: #6c757d; color: white; text-decoration: none; border-radius: 4px; display: inline-block;">
+                Отмена
+            </a>
+        </div>
+    </form>
+    
+    <div style="margin-top: 20px; padding: 15px; background-color: #fff3cd; border-radius: 5px;">
+        <p style="margin: 0; color: #856404;">
+            <strong>Примечание:</strong> После подписки вы будете получать уведомления о новых статьях в выбранных категориях, а также еженедельную рассылку.
+        </p>
+    </div>
+</div>
+{% endblock %}

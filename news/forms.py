@@ -1,6 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from .models import Post
+from .models import Post, Category
 
 class PostForm(forms.ModelForm):
     text = forms.CharField(
@@ -68,3 +68,19 @@ class PostForm(forms.ModelForm):
         if title and title[0].islower():
             raise ValidationError("Заголовок должен начинаться с заглавной буквы")
         return title
+
+class SubscribeForm(forms.Form):
+    categories = forms.ModelMultipleChoiceField(
+        queryset=Category.objects.none(),
+        widget=forms.CheckboxSelectMultiple,
+        label='Выберите категории для подписки',
+    )
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        categories = Category.objects.all().order_by('name')
+        self.fields['categories'].queryset = categories
+        
+        self.fields['categories'].choices = [
+            (category.id, category.name) for category in categories
+        ]

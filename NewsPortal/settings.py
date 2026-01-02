@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'django_filters',
     'sign',
     'protect',
+    'django_apscheduler',
 ]
 
 AUTHENTICATION_BACKENDS = [
@@ -151,7 +152,6 @@ LOGIN_URL = '/sign/login/'
 LOGIN_REDIRECT_URL = '/news/'
 LOGOUT_REDIRECT_URL = '/news/'
 
-# Allauth settings
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = True
@@ -159,15 +159,19 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1
+APSCHEDULER_DATETIME_FORMAT = "N j, Y, f:s a"
+APSCHEDULER_RUN_NOW_TIMEOUT = 25
 
-# Email settings (для разработки - вывод в консоль)
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-EMAIL_HOST = 'localhost'
-EMAIL_PORT = 1025
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = ''
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
+EMAIL_HOST_USER = 'Wladlk25@ya.ru'
+EMAIL_HOST_PASSWORD = 'Wladlk251989$tudent'
 EMAIL_USE_TLS = False
-DEFAULT_FROM_EMAIL = 'webmaster@localhost'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+SERVER_EMAIL = EMAIL_HOST_USER
+SITE_URL = 'http://127.0.0.1:8000'
 
 # Social account providers
 SOCIALACCOUNT_PROVIDERS = {
