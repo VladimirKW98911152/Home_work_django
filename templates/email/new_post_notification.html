@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h2>Здравствуйте, {{ user.username }}!</h2>
+    <p>В категории "{{ post.postCategory.first.name }}" появилась новая запись:</p>
+    <h3>{{ post.title }}</h3>
+    <p>{{ post.text|truncatechars:100 }}</p>
+    <p><a href="{{ settings.SITE_URL }}{{ post.get_absolute_url }}">Читать полностью</a></p>
+</body>
+</html>

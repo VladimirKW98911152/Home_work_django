@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h2>Здравствуйте, {{ user.username }}!</h2>
+    <p>За последнюю неделю в ваших подписках появились новые записи:</p>
+    <ul>
+        {% for post in posts %}
+            <li>
+                <a href="{{ settings.SITE_URL }}{{ post.get_absolute_url }}">{{ post.title }}</a>
+                ({{ post.dateCreation|date:"d.m.Y" }})
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

@@ -9,6 +9,7 @@ from .models import Post, Subscriber
 from .filters import PostFilter
 from .forms import PostForm, SubscribeForm
 
+from .tasks import send_notification_about_new_post
 
 class PostListView(ListView):
     model = Post
@@ -60,6 +61,14 @@ class NewsCreateView(BasePostView, CreateView):
     def get_success_url(self):
         return reverse_lazy('post', kwargs={'pk': self.object.pk})
 
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        post.categoryType = 'NW' if 'news' in self.request.path else 'AR'
+        post.save()
+        form.save_m2m()
+        send_notification_about_new_post.delay(post.id)
+        return super().form_valid(form)
+
 
 class ArticleCreateView(BasePostView, CreateView):
     template_name = 'post_edit.html'
@@ -73,6 +82,13 @@ class ArticleCreateView(BasePostView, CreateView):
     def get_success_url(self):
         return reverse_lazy('post', kwargs={'pk': self.object.pk})
 
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        post.categoryType = 'NW' if 'news' in self.request.path else 'AR'
+        post.save()
+        form.save_m2m()
+        send_notification_about_new_post.delay(post.id)
+        return super().form_valid(form)
 
 class PostUpdateView(BasePostView, UpdateView):
     template_name = 'post_edit.html'
