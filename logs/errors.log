@@ -1,0 +1,53 @@
+2026-01-05 19:58:13,326 ERROR REQUEST ERROR: Ошибка в запросе /home/wladlk25/Desktop/NewsPortal/NewsPortal/test_logging.py
+(<class 'ValueError'>, ValueError('Искусственная ошибка для тестирования'), <traceback object at 0x7ff7b516ddc0>)
+Traceback (most recent call last):
+  File "/home/wladlk25/Desktop/NewsPortal/NewsPortal/test_logging.py", line 31, in test_all_loggers
+    raise ValueError("Искусственная ошибка для тестирования")
+ValueError: Искусственная ошибка для тестирования
+2026-01-05 19:58:13,327 ERROR DB ERROR: Ошибка базы данных /home/wladlk25/Desktop/NewsPortal/NewsPortal/test_logging.py
+(<class 'django.core.exceptions.FieldError'>, FieldError("Cannot resolve keyword 'nonexistent_field' into field. Choices are: author, author_id, categoryType, comment, dateCreation, id, postCategory, postcategory, rating, text, title"), <traceback object at 0x7ff7b4dbbf40>)
+Traceback (most recent call last):
+  File "/home/wladlk25/Desktop/NewsPortal/NewsPortal/test_logging.py", line 38, in test_all_loggers
+    Post.objects.filter(nonexistent_field=True)
+  File "/home/wladlk25/anaconda3/envs/NewsPortalDjango/lib/python3.11/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/wladlk25/anaconda3/envs/NewsPortalDjango/lib/python3.11/site-packages/django/db/models/query.py", line 1495, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/wladlk25/anaconda3/envs/NewsPortalDjango/lib/python3.11/site-packages/django/db/models/query.py", line 1513, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "/home/wladlk25/anaconda3/envs/NewsPortalDjango/lib/python3.11/site-packages/django/db/models/query.py", line 1523, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "/home/wladlk25/anaconda3/envs/NewsPortalDjango/lib/python3.11/site-packages/django/db/models/sql/query.py", line 1646, in add_q
+    clause, _ = self._add_q(q_object, can_reuse)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/wladlk25/anaconda3/envs/NewsPortalDjango/lib/python3.11/site-packages/django/db/models/sql/query.py", line 1678, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "/home/wladlk25/anaconda3/envs/NewsPortalDjango/lib/python3.11/site-packages/django/db/models/sql/query.py", line 1526, in build_filter
+    lookups, parts, reffed_expression = self.solve_lookup_type(arg, summarize)
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/wladlk25/anaconda3/envs/NewsPortalDjango/lib/python3.11/site-packages/django/db/models/sql/query.py", line 1333, in solve_lookup_type
+    _, field, _, lookup_parts = self.names_to_path(lookup_splitted, self.get_meta())
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/wladlk25/anaconda3/envs/NewsPortalDjango/lib/python3.11/site-packages/django/db/models/sql/query.py", line 1806, in names_to_path
+    raise FieldError(
+django.core.exceptions.FieldError: Cannot resolve keyword 'nonexistent_field' into field. Choices are: author, author_id, categoryType, comment, dateCreation, id, postCategory, postcategory, rating, text, title
+2026-01-05 19:59:45,017 ERROR Internal Server Error: /news/create /home/wladlk25/anaconda3/envs/NewsPortalDjango/lib/python3.11/site-packages/django/utils/log.py
+(<class 'RuntimeError'>, RuntimeError("You called this URL via POST, but the URL doesn't end in a slash and you have APPEND_SLASH set. Django can't redirect to the slash URL while maintaining POST data. Change your form to point to 127.0.0.1:8000/news/create/ (note the trailing slash), or set APPEND_SLASH=False in your Django settings."), <traceback object at 0x7f018dbcaa00>)
+Traceback (most recent call last):
+  File "/home/wladlk25/anaconda3/envs/NewsPortalDjango/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/wladlk25/anaconda3/envs/NewsPortalDjango/lib/python3.11/site-packages/django/utils/deprecation.py", line 122, in __call__
+    response = self.process_response(request, response)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/wladlk25/anaconda3/envs/NewsPortalDjango/lib/python3.11/site-packages/django/middleware/common.py", line 108, in process_response
+    return self.response_redirect_class(self.get_full_path_with_slash(request))
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/wladlk25/anaconda3/envs/NewsPortalDjango/lib/python3.11/site-packages/django/middleware/common.py", line 87, in get_full_path_with_slash
+    raise RuntimeError(
+RuntimeError: You called this URL via POST, but the URL doesn't end in a slash and you have APPEND_SLASH set. Django can't redirect to the slash URL while maintaining POST data. Change your form to point to 127.0.0.1:8000/news/create/ (note the trailing slash), or set APPEND_SLASH=False in your Django settings.
+2026-01-05 19:59:45,018 ERROR "POST /news/create HTTP/1.1" 500 79830 /home/wladlk25/anaconda3/envs/NewsPortalDjango/lib/python3.11/site-packages/django/core/servers/basehttp.py
+None

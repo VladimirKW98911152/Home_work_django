@@ -1,0 +1,4 @@
+2026-01-05 19:58:13,325 INFO test_logging SECURITY: Тест безопасности - обычное сообщение
+2026-01-05 19:58:13,325 WARNING test_logging SECURITY: Подозрительная активность
+2026-01-05 20:00:54,032 WARNING log Forbidden (CSRF cookie not set.): /news/create/
+2026-01-05 20:06:21,476 WARNING log Forbidden (CSRF cookie not set.): /news/create/
